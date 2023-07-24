@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 
 const BasicForm = () => {
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPasswd, setInputPasswd] = useState("");
+  const [ formInputs, setFormInputs ] = useState({
+    email: "",
+    passwd: "",
+  });
 
-  const handleEmailChange = (e) => {
-    setInputEmail(e.target.value);
-  };
-  const handlePasswdChange = (e) => {
-    setInputPasswd(e.target.value);
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormInputs({
+      ...formInputs,
+      [id]: value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const email = inputEmail.trim();
-    const passwd = inputPasswd.trim();
+    const email = formInputs.email.trim();
+    const passwd = formInputs.passwd.trim();
     alert(email + " - " + passwd);
   };
   return (
@@ -24,8 +27,8 @@ const BasicForm = () => {
         <input
           type="text"
           id="email"
-          value={inputEmail}
-          onChange={handleEmailChange}
+          value={formInputs.email}
+          onChange={handleChange}
         />
       </div>
       <div className="form-control">
@@ -33,8 +36,8 @@ const BasicForm = () => {
         <input
           type="password"
           id="passwd"
-          value={inputPasswd}
-          onChange={handlePasswdChange}
+          value={formInputs.passwd}
+          onChange={handleChange}
         />
       </div>
       <div className="form-actions">
