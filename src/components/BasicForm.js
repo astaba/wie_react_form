@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 
+const INITIAL_STATE = {
+  email: "",
+  passwd: "",
+};
+const getDirtyFields = (formFields) =>
+  Object.keys(formFields).reduce((acc, key) => {
+    const isDirty = formFields[key] !== INITIAL_STATE[key];
+    return { ...acc, [key]: isDirty };
+  }, {});
+
 const BasicForm = () => {
-  const [ formInputs, setFormInputs ] = useState({
-    email: "",
-    passwd: "",
-  });
+  const [formInputs, setFormInputs] = useState(INITIAL_STATE);
+
+  const dirtyFields = getDirtyFields(formInputs);
+  const hasGotDirty = Object.values(dirtyFields).every((isDirty) => !isDirty);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -19,6 +29,7 @@ const BasicForm = () => {
     const email = formInputs.email.trim();
     const passwd = formInputs.passwd.trim();
     alert(email + " - " + passwd);
+    setFormInputs(INITIAL_STATE);
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -41,7 +52,7 @@ const BasicForm = () => {
         />
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={hasGotDirty}>Submit</button>
       </div>
     </form>
   );
